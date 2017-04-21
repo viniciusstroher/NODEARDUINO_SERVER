@@ -1,19 +1,29 @@
 function startServer(){
 	try{
 		var net = require('net');
-		console.log("[Log - "+new Date().toISOString()+"]iniciando servidor");
-		
+		var fs  = require('fs');
+
+		console.log("[Log - "+new Date().toISOString()+"]iniciando servidor");	
 
 		var server = net.createServer(function(socket) {
-			console.log("[Log - "+new Date().toISOString()+"]Cliente Conectado");
+			var connect_log = '[Log - '+new Date().toISOString()+']Conectando no servidor.\r\n';
 			
-			socket.write('[Log - '+new Date().toISOString()+']CONNECTION ACEPTED\r\n');
+			socket.write(connect_log);
 	
-			// Handleflg incoming messages from clients.
 			socket.on('data', function (data) {
-				var log = '[Log - '+new Date().toISOString()+'] Data Socket: '+data.toString('utf8');
+				var log = '[Log - '+new Date().toISOString()+'] ARDUINO DATA: '+data.toString('utf8');
 			    console.log(log);
+
 			    try{
+					fs.appendFile('log_arduino.txt', log, function (err) {
+					  if (err) {
+					    // append failed
+					  } else {
+					    // done
+					  }
+					});
+			    
+
 				    /*var param = data.toString('utf8').split("#");
 				    var value = param[3].split(":");
 
