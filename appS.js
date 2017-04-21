@@ -11,7 +11,7 @@ function startServer(){
 			socket.write(connect_log);
 	
 			socket.on('data', function (data) {
-				var log = '[Log - '+new Date().toISOString()+'] ARDUINO DATA: '+data.toString('utf8')+".\r\n";
+				var log = '[Log - '+new Date().toISOString()+'] \n ARDUINO DATA: '+data.toString('utf8')+"\r\n";
 			    console.log(log);
 
 			    try{
