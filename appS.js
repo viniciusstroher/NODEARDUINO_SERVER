@@ -3,7 +3,7 @@ function startServer(){
 		var net = require('net');
 		var fs  = require('fs');
 
-		console.log("[Log - "+new Date().toISOString()+"]iniciando servidor");	
+		console.log("[Log - "+new Date().toISOString()+"]Iniciando servidor.\r\n");	
 
 		var server = net.createServer(function(socket) {
 			var connect_log = '[Log - '+new Date().toISOString()+']Conectando no servidor.\r\n';
@@ -11,7 +11,7 @@ function startServer(){
 			socket.write(connect_log);
 	
 			socket.on('data', function (data) {
-				var log = '[Log - '+new Date().toISOString()+'] ARDUINO DATA: '+data.toString('utf8');
+				var log = '[Log - '+new Date().toISOString()+'] ARDUINO DATA: '+data.toString('utf8')+".\r\n";
 			    console.log(log);
 
 			    try{
