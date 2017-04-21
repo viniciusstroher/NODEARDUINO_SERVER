@@ -2,15 +2,17 @@ function startServer(){
 	try{
 		var net = require('net');
 		console.log("[Log]iniciando servidor");
-		var flag = true;
+		
+
 		var server = net.createServer(function(socket) {
-			console.log("[Log]Cliente Conectado");
+			console.log("[Log '+new date().toisostring()+']Cliente Conectado");
 			
-			socket.write('[Log]CONNECTION ACEPTED\r\n');
-			flag = false;
+			socket.write('[Log '+new date().toisostring()+']CONNECTION ACEPTED\r\n');
+	
 			// Handleflg incoming messages from clients.
 			socket.on('data', function (data) {
-			    console.log('[Log]Data Socket:',data.toString('utf8'),flag);
+				var log = '[Log '+new date().toisostring()+'] Data Socket: '+data.toString('utf8');
+			    console.log(log);
 			    try{
 				    /*var param = data.toString('utf8').split("#");
 				    var value = param[3].split(":");
@@ -18,10 +20,10 @@ function startServer(){
 				    console.log("LIGAR LUZ ? ",value[1]);
 				    if(parseInt(value[1]) == 1){
 				    	this.write('liga_luz');
-				    	flag = false;
+				    	
 				    }else{
 				    	this.write('desliga_luz');
-				    	flag = true;
+				    	
 				    }*/
 				}catch(ex){
 					console.log("ERROR SOCKET DATA");
