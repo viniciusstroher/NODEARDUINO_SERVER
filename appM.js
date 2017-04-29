@@ -27,11 +27,19 @@ var client = new net.Socket();
 		console.log('Conectado no midleware.');
 		//client.write('init');
 		//client.write('status');
-		//client.write('liga_luz');
-		client.write('desliga_luz');
-
+		//client.write('desliga_luz');
+		client.write('liga_luz');
+		
+		client.end();
+		console.log("DESTROY");
+		client.on('error', function() {
+	        console.log('Socket error!');
+	    });
+		//client.write('desliga_luz');
+		//setTimeout(function(){client.write('desliga_luz'); },1000);
+		/*
 		client.on('data', function(data) {
 			console.log('Received: ' , data.toString());
-			//client.destroy(); // kill client after server's response
-		});
+			client.end(); // kill client after server's response
+		});*/
 	});

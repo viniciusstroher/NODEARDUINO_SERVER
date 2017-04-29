@@ -26,8 +26,6 @@ function startServer(){
 						acaoDesligaLuz = true;
 					}
 					
-					console.log(acaoLigaLuz,acaoDesligaLuz);
-
 					if(data.toString('utf8') == 'status'){
 						console.log("ENVIANDO ESTADO DO ARDUINO");
 						try {
@@ -48,14 +46,16 @@ function startServer(){
 
 					if(acaoLigaLuz){
 						console.log('liga_luz');
-						socket.write('liga_luz');
 						acaoLigaLuz = false;
+						socket.write('liga_luz');
+						
 					}
 
 					if(acaoDesligaLuz){
 						console.log('desliga_luz');
-						socket.write('desliga_luz');
 						acaoDesligaLuz = false;
+						socket.write('desliga_luz');
+						
 					}
 					
 				}catch(ex){
