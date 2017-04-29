@@ -23,23 +23,14 @@ io.on('connection', function (socket) {
 
 */
 var client = new net.Socket();
-	client.connect(8090, host, function() {
-		console.log('Conectado no midleware.');
-		//client.write('init');
-		//client.write('status');
-		//client.write('desliga_luz');
-		client.write('liga_luz');
-		
-		client.end();
-		console.log("DESTROY");
-		client.on('error', function() {
-	        console.log('Socket error!');
-	    });
-		//client.write('desliga_luz');
-		//setTimeout(function(){client.write('desliga_luz'); },1000);
-		/*
-		client.on('data', function(data) {
-			console.log('Received: ' , data.toString());
-			client.end(); // kill client after server's response
-		});*/
-	});
+client.connect(8090, host, function() {
+console.log('Conectado no midleware.');
+//client.write('init');
+//client.write('status');
+//
+//client.write('desliga_luz');
+client.write('liga_luz');
+client.destroy(); 
+throw 'comando enviado';
+
+});
