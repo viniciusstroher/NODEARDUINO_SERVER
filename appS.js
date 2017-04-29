@@ -3,23 +3,66 @@ function startServer(){
 		var net = require('net');
 		var fs  = require('fs');
 		var jsonData = null;
-
+		
 		console.log("[Log - "+new Date().toISOString()+"]Iniciando servidor.\r\n");	
+
+		var acaoLigaLuz = false;
+		var acaoDesligaLuz = false;
+
+
 
 		var server = net.createServer(function(socket) {
 			var connect_log = '[Log - '+new Date().toISOString()+']Conectando no servidor.\r\n';
 			
 			socket.write(connect_log);
-	
+			
 			socket.on('data', function (data) {
 				try{
-					jsonData = JSON.parse(data.toString('utf8'));
-					console.log(jsonData);
-				}catch(ex){
+					if(data.toString('utf8') == 'liga_luz'){
+						acaoLigaLuz = true;
+					}
 
+					if(data.toString('utf8') == 'desliga_luz'){
+						acaoDesligaLuz = true;
+					}
+					
+					console.log(acaoLigaLuz,acaoDesligaLuz);
+
+					if(data.toString('utf8') == 'status'){
+						console.log("ENVIANDO ESTADO DO ARDUINO");
+						try {
+							console.log(jsonData);
+						    socket.write(JSON.stringify(jsonData));
+						} catch (e) {
+						    console.log("not JSON");
+						}
+						//
+						console.log(jsonData);
+						//console.log("saindo");
+						//process.exit();
+					}
+
+
+					var jsonDataAux = JSON.parse(data.toString());
+					jsonData = jsonDataAux;
+
+					if(acaoLigaLuz){
+						console.log('liga_luz');
+						socket.write('liga_luz');
+						acaoLigaLuz = false;
+					}
+
+					if(acaoDesligaLuz){
+						console.log('desliga_luz');
+						socket.write('desliga_luz');
+						acaoDesligaLuz = false;
+					}
+					
+				}catch(ex){
+					console.log(ex);
 				}
 
-				var log = '[Log - '+new Date().toISOString()+'] \n ARDUINO DATA: '+data.toString('utf8')+"\r\n";
+				var log = '[Log - '+new Date().toISOString()+'] \n : '+data.toString('utf8')+"\r\n";
 			    console.log(log);
 
 			    try{
@@ -32,44 +75,17 @@ function startServer(){
 					});
 			    	
 				}catch(ex){
-					console.log("ERROR SOCKET DATA");
-					socket.destroy();
+					
 				}
 			});
+
 			socket.on('error', function (data) {
 				console.log('error socket',data);
-				
 			});
 			//socket.pipe(socket);
 		});
 
 		server.listen(8090);
-
-		var app = require('http').createServer(handler)
-		var io = require('socket.io')(app);
-		
-		app.listen(8091);
-
-		function handler (req, res) {
-		  fs.readFile(__dirname + '/index.html',
-		  function (err, data) {
-		    if (err) {
-		      res.writeHead(500);
-		      return res.end('Error loading index.html');
-		    }
-
-		    res.writeHead(200);
-		    res.end(data);
-		  });
-		}
-
-		io.on('connection', function (socket) {
-		  socket.emit('connectado', { conectado: true });
-
-		  socket.on('status', function (data) {
-			socket.emit('status', { jsonData: jsonData });		    
-		  });
-		});
 
 	}catch(ex){
 		console.log("RESTART SERVER");
