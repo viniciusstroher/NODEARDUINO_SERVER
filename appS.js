@@ -14,6 +14,7 @@ function startServer(){
 			socket.on('data', function (data) {
 				try{
 					jsonData = JSON.parse(data.toString('utf8'));
+					console.log(jsonData);
 				}catch(ex){
 
 				}
@@ -30,18 +31,6 @@ function startServer(){
 					  }
 					});
 			    	
-					console.log(jsonData);
-				    /*var param = data.toString('utf8').split("#");
-				    var value = param[3].split(":");
-
-				    console.log("LIGAR LUZ ? ",value[1]);
-				    if(parseInt(value[1]) == 1){
-				    	this.write('liga_luz');
-				    	
-				    }else{
-				    	this.write('desliga_luz');
-				    	
-				    }*/
 				}catch(ex){
 					console.log("ERROR SOCKET DATA");
 					socket.destroy();
@@ -75,12 +64,13 @@ function startServer(){
 		}
 
 		io.on('connection', function (socket) {
-		  socket.emit('news', { hello: 'world' });
-		  socket.on('my other event', function (data) {
-		    console.log(data);
+		  socket.emit('connectado', { conectado: true });
+
+		  socket.on('status', function (data) {
+			socket.emit('status', { jsonData: jsonData });		    
 		  });
 		});
-		
+
 	}catch(ex){
 		console.log("RESTART SERVER");
 		startServer();
