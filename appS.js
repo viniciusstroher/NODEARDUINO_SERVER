@@ -12,27 +12,29 @@ function startServer(){
 		
 		var server = net.createServer(function(socket) {
 			var connect_log = '[Log - '+new Date().toISOString()+']Conectando no servidor.\r\n';
-			
+			console.log(connect_log);
+			socket.flush();
 			if(ligaLuz){
 				ligaLuz = false;
-				socket.write('liga_luz');
-				console.log('liga_luz');
+				socket.write('ligaluz');
+				//console.log('liga_luz');
 				//process.exit();
 			}
 
 			if(desligaLuz){
 				desligaLuz = false;
-				socket.write('desliga_luz');
-				console.log('desliga_luz');
+				socket.write('desligaluz');
+				//console.log('desliga_luz');
 				//process.exit();
 			}
-
+			
 			socket.on('data', function (data) {
 				try{
 					
 					var jsonDataAux = JSON.parse(data.toString());
 					jsonData = jsonDataAux;
 
+								
 				}catch(ex){
 					console.log(ex);
 				}
