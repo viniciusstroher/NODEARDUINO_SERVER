@@ -29,14 +29,16 @@ function startServer(){
 			}
 			
 			socket.on('data', function (data) {
+				console.log(data.toString());
 				try{
 					
 					var jsonDataAux = JSON.parse(data.toString());
+
 					jsonData = jsonDataAux;
 
 								
 				}catch(ex){
-					console.log(ex);
+					//console.log(ex);
 				}
 
 				var log = '[Log - '+new Date().toISOString()+'] \n : '+data.toString('utf8')+"\r\n";
@@ -85,8 +87,8 @@ app.get('/desliga_luz', function(req, res) {
 });
 
 app.get('/status', function(req, res) {
-	desligaLuz = true;
     res.send(jsonData);
+
 });
 
 
