@@ -1,11 +1,11 @@
 var ligaLuz    = false;
 var desligaLuz = false;
-
+var jsonData = null;
 function startServer(){
 	try{
 		var net = require('net');
 		var fs  = require('fs');
-		var jsonData = null;
+		
 		
 		console.log("[Log - "+new Date().toISOString()+"]Iniciando servidor.\r\n");	
 
@@ -16,14 +16,14 @@ function startServer(){
 			
 			if(ligaLuz){
 				ligaLuz = false;
-				socket.write('ligaluz');
+				socket.write('abre_rele_luz');
 				//console.log('liga_luz');
 				//process.exit();
 			}
 
 			if(desligaLuz){
 				desligaLuz = false;
-				socket.write('desligaluz');
+				socket.write('fecha_rele_luz');
 				//console.log('desliga_luz');
 				//process.exit();
 			}
@@ -83,6 +83,12 @@ app.get('/desliga_luz', function(req, res) {
 	desligaLuz = true;
     res.send({enviando_comando : true});
 });
+
+app.get('/status', function(req, res) {
+	desligaLuz = true;
+    res.send(jsonData);
+});
+
 
 app.listen(80);
 console.log('API MOBILE RODANDO NA 80.');
