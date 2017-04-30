@@ -13,7 +13,7 @@ function startServer(){
 		var server = net.createServer(function(socket) {
 			var connect_log = '[Log - '+new Date().toISOString()+']Conectando no servidor.\r\n';
 			console.log(connect_log);
-			socket.flush();
+			
 			if(ligaLuz){
 				ligaLuz = false;
 				socket.write('ligaluz');
