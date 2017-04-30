@@ -1,3 +1,6 @@
+var ligaLuz    = false;
+var desligaLuz = false;
+
 function startServer(){
 	try{
 		var net = require('net');
@@ -6,58 +9,30 @@ function startServer(){
 		
 		console.log("[Log - "+new Date().toISOString()+"]Iniciando servidor.\r\n");	
 
-		var acaoLigaLuz = false;
-		var acaoDesligaLuz = false;
-
-
-
+		
 		var server = net.createServer(function(socket) {
 			var connect_log = '[Log - '+new Date().toISOString()+']Conectando no servidor.\r\n';
 			
-			socket.write(connect_log);
-			
+			if(ligaLuz){
+				ligaLuz = false;
+				socket.write('liga_luz');
+				console.log('liga_luz');
+				//process.exit();
+			}
+
+			if(desligaLuz){
+				desligaLuz = false;
+				socket.write('desliga_luz');
+				console.log('desliga_luz');
+				//process.exit();
+			}
+
 			socket.on('data', function (data) {
 				try{
-					if(data.toString('utf8') == 'liga_luz'){
-						acaoLigaLuz = true;
-					}
-
-					if(data.toString('utf8') == 'desliga_luz'){
-						acaoDesligaLuz = true;
-					}
 					
-					if(data.toString('utf8') == 'status'){
-						console.log("ENVIANDO ESTADO DO ARDUINO");
-						try {
-							console.log(jsonData);
-						    socket.write(JSON.stringify(jsonData));
-						} catch (e) {
-						    console.log("not JSON");
-						}
-						//
-						console.log(jsonData);
-						//console.log("saindo");
-						//process.exit();
-					}
-
-
 					var jsonDataAux = JSON.parse(data.toString());
 					jsonData = jsonDataAux;
 
-					if(acaoLigaLuz){
-						console.log('liga_luz');
-						acaoLigaLuz = false;
-						socket.write('liga_luz');
-						
-					}
-
-					if(acaoDesligaLuz){
-						console.log('desliga_luz');
-						acaoDesligaLuz = false;
-						socket.write('desliga_luz');
-						
-					}
-					
 				}catch(ex){
 					console.log(ex);
 				}
@@ -93,3 +68,19 @@ function startServer(){
 	}
 }
 startServer();
+
+
+var express = require('express');
+var app = express();
+
+app.get('/liga_luz', function(req, res) {
+	ligaLuz = true;
+    res.send({enviando_comando : true});
+});
+app.get('/desliga_luz', function(req, res) {
+	desligaLuz = true;
+    res.send({enviando_comando : true});
+});
+
+app.listen(80);
+console.log('API MOBILE RODANDO NA 80.');
