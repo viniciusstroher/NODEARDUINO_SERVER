@@ -1,5 +1,13 @@
 var ligaLuz    = false;
 var desligaLuz = false;
+
+var ligaLuz2    = false;
+var desligaLuz2 = false;
+
+var ligaLuz3    = false;
+var desligaLuz3 = false;
+
+
 var jsonData = null;
 function startServer(){
 	try{
@@ -16,14 +24,42 @@ function startServer(){
 			
 			if(ligaLuz){
 				ligaLuz = false;
-				socket.write('abre_rele_luz');
+				socket.write('abre_rele_luz1');
 				//console.log('liga_luz');
 				//process.exit();
 			}
 
 			if(desligaLuz){
 				desligaLuz = false;
-				socket.write('fecha_rele_luz');
+				socket.write('fecha_rele_luz1');
+				//console.log('desliga_luz');
+				//process.exit();
+			}
+
+			if(ligaLuz2){
+				ligaLuz2 = false;
+				socket.write('abre_rele_luz2');
+				//console.log('liga_luz');
+				//process.exit();
+			}
+
+			if(desligaLuz2){
+				desligaLuz2 = false;
+				socket.write('fecha_rele_luz2');
+				//console.log('desliga_luz');
+				//process.exit();
+			}
+
+			if(ligaLuz3){
+				ligaLuz3 = false;
+				socket.write('abre_rele_luz3');
+				//console.log('liga_luz');
+				//process.exit();
+			}
+
+			if(desligaLuz3){
+				desligaLuz3 = false;
+				socket.write('fecha_rele_luz3');
 				//console.log('desliga_luz');
 				//process.exit();
 			}
@@ -100,10 +136,34 @@ app.get('/liga_luz', function(req, res) {
 	ligaLuz = true;
     res.send({enviando_comando : true});
 });
+
 app.get('/desliga_luz', function(req, res) {
 	desligaLuz = true;
     res.send({enviando_comando : true});
 });
+
+
+app.get('/liga_luz2', function(req, res) {
+	ligaLuz2 = true;
+    res.send({enviando_comando : true});
+});
+
+app.get('/desliga_luz2', function(req, res) {
+	desligaLuz2 = true;
+    res.send({enviando_comando : true});
+});
+
+app.get('/liga_luz3', function(req, res) {
+	ligaLuz3 = true;
+    res.send({enviando_comando : true});
+});
+
+app.get('/desliga_luz3', function(req, res) {
+	desligaLuz3 = true;
+    res.send({enviando_comando : true});
+});
+
+
 
 app.get('/status', function(req, res) {
     res.send(jsonData);
