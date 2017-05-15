@@ -10,7 +10,7 @@ function startServer(){
 	try{
 		var net = require('net');
 		var fs  = require('fs');
-		
+		var csv = require('ya-csv');
 		console.log("[Log - "+new Date().toISOString()+"]Iniciando servidor (Coleta de Voltagem - "+lugar+").\r\n");	
 		
 		var server = net.createServer(function(socket) {
@@ -26,14 +26,9 @@ function startServer(){
 					//console.log(data.toString());	
 					
 					try{
-				    	var csv_row = new Date().toISOString()+';'+jsonData.corrente;
-						fs.appendFile('log_corrente_'+lugar+'.csv', csv_row,'utf8', function (err) {
-						  if (err) {
-						    // append failed
-						  } else {
-						    // done
-						  }
-						});
+				    	
+						var writer = csv.createCsvStreamWriter(fs.createWriteStream(lugar+'.csv'));  
+						writer.writeRecord([new Date().toISOString(), jsonData.corrente]); 
 				    	
 					}catch(ex){
 						
