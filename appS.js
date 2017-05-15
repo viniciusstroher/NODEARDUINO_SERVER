@@ -11,6 +11,7 @@ var desligaLuz3 = false;
 var jsonData = null;
 function startServer(){
 	try{
+		var csv = require('ya-csv');
 		var net = require('net');
 		var fs  = require('fs');
 		
@@ -72,7 +73,9 @@ function startServer(){
 
 					jsonData = jsonDataAux;
 
-								
+					var writer = csv.createCsvStreamWriter(fs.createWriteStream('mestre.csv'));  
+					writer.writeRecord(['column1', 'column2', 'column3']); 	
+
 				}catch(ex){
 					//console.log(ex);
 				}
