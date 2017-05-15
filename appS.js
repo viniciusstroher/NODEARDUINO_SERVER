@@ -7,6 +7,8 @@ var desligaLuz2 = false;
 var ligaLuz3    = false;
 var desligaLuz3 = false;
 
+var ligaArCondicionado = false;
+var ligarProjetor 	   = false;
 
 var jsonData = null;
 
@@ -27,6 +29,21 @@ function startServer(){
 			var connect_log = '[Log - '+new Date().toISOString()+']Conectando no servidor.\r\n';
 			console.log(connect_log);
 			
+			if(ligaArCondicionado){
+				ligaArCondicionado = false;
+				socket.write('liga_ar_condicionado');
+				//console.log('liga_luz');
+				//process.exit();
+			}
+
+			if(ligarProjetor){
+				ligarProjetor = false;
+				socket.write('liga_projetor');
+				//console.log('liga_luz');
+				//process.exit();
+			}
+
+
 			if(ligaLuz){
 				ligaLuz = false;
 				socket.write('abre_rele_luz1');
@@ -138,6 +155,16 @@ var app = express();
 
 	// Pass to next layer of middleware
 	next();
+});
+
+app.get('/liga_ar_condicionado', function(req, res) {
+	ligaArCondicionado = true;
+    res.send({enviando_comando : true});
+});
+
+app.get('/liga_projetor', function(req, res) {
+	ligarProjetor = true;
+    res.send({enviando_comando : true});
 });
 
 app.get('/liga_luz', function(req, res) {
