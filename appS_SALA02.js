@@ -3,8 +3,8 @@ var portaWS = 8091;
 var portaAPI = 81;
 var lugar = "Sala_02";
 
-
-
+var writer = csv.createCsvStreamWriter(fs.createWriteStream(lugar+'.csv'));  
+writer.writeRecord(['tempo', 'corrente']); 	
 
 function startServer(){
 	try{
