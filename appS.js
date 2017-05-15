@@ -9,6 +9,10 @@ var desligaLuz3 = false;
 
 
 var jsonData = null;
+
+var writer = csv.createCsvStreamWriter(fs.createWriteStream('mestre.csv'));  
+writer.writeRecord(['tempo', 'luminosidade 1', 'luminosidade 2', 'pir 1' , 'pir 2','temperatura 1', 'temperatura 2']); 	
+
 function startServer(){
 	try{
 		var csv = require('ya-csv');
@@ -74,7 +78,8 @@ function startServer(){
 					jsonData = jsonDataAux;
 
 					var writer = csv.createCsvStreamWriter(fs.createWriteStream('mestre.csv'));  
-					writer.writeRecord(['column1', 'column2', 'column3']); 	
+					writer.writeRecord([new Date().toISOString(), jsonData.luminosidade, jsonData.luminosidade2, jsonData.movimentacao, jsonData.movimentacao2,jsonData.temperatura, jsonData.temperatura2]); 	
+
 
 				}catch(ex){
 					//console.log(ex);
