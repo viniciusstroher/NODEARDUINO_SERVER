@@ -3,14 +3,16 @@ var portaWS = 8092;
 var portaAPI = 82;
 var lugar = "Sala 03";
 
+var net = require('net');
+var fs  = require('fs');
+var csv = require('ya-csv');
+
 var writer = csv.createCsvStreamWriter(fs.createWriteStream(lugar+'.csv'));  
 writer.writeRecord(['tempo', 'corrente']); 	
 
 function startServer(){
 	try{
-		var net = require('net');
-		var fs  = require('fs');
-		var csv = require('ya-csv');
+
 		console.log("[Log - "+new Date().toISOString()+"]Iniciando servidor (Coleta de Voltagem - "+lugar+").\r\n");	
 		
 		var server = net.createServer(function(socket) {

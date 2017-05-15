@@ -12,14 +12,15 @@ var ligarProjetor 	   = false;
 
 var jsonData = null;
 
+var csv = require('ya-csv');
+var net = require('net');
+var fs  = require('fs');
+
 var writer = csv.createCsvStreamWriter(fs.createWriteStream('mestre.csv'));  
 writer.writeRecord(['tempo', 'luminosidade 1', 'luminosidade 2', 'pir 1' , 'pir 2','temperatura 1', 'temperatura 2']); 	
 
 function startServer(){
 	try{
-		var csv = require('ya-csv');
-		var net = require('net');
-		var fs  = require('fs');
 		
 		
 		console.log("[Log - "+new Date().toISOString()+"]Iniciando servidor.\r\n");	
