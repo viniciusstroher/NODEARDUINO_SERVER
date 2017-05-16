@@ -121,10 +121,11 @@ function startServer(){
 					if(!processando_pir){
 						processando_pir = true;
 						setTimeout(function(){
+							console.log('regra shutdown ',pir_1,pir_2);
 							if(pir_1 == 0 && pir_2 == 0){
 								regraShutdown = true;
 							}
-						},300000);
+						},6000);
 					}
 					//regra shutdown
 					var dataObj = new Date();
