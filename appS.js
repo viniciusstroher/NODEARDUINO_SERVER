@@ -15,6 +15,14 @@ var jsonData = null;
 var net = require('net');
 var fs  = require('fs');
 
+var data_hoje = '';
+var hora_hoje = '';
+
+var processando_pir = false;
+var pir_1 			= 0;
+var pir_2 			= 0;
+var regraShutdown   = false;
+
 
 var head = ['dia','hora', 'luminosidade 1', 'luminosidade 2', 'pir 1' , 'pir 2','temperatura 1', 'temperatura 2'].join(";")+"\n";	
 try{
@@ -33,14 +41,15 @@ try{
 function startServer(){
 	try{
 		
-		
 		console.log("[Log - "+new Date().toISOString()+"]Iniciando servidor.\r\n");	
-
 		
 		var server = net.createServer(function(socket) {
 			var connect_log = '[Log - '+new Date().toISOString()+']Conectando no servidor.\r\n';
 			console.log(connect_log);
-			
+			if(regraShutdown){
+				regraShutdown = false;
+				socket.write('shutdown_relays');
+			}
 			if(ligaArCondicionado){
 				ligaArCondicionado = false;
 				socket.write('liga_ar_condicionado');
@@ -105,10 +114,23 @@ function startServer(){
 					var jsonDataAux = JSON.parse(data.toString());
 
 					jsonData = jsonDataAux;
+					
+					pir_1 = jsonData.movimentacao;
+					pir_2 = jsonData.movimentacao2;
+					//REGRA SHUTDOWN
+					if(!processando_pir){
+						processando_pir = true;
+						setTimeout(function(){
+							if(pir_1 == 0 && pir_2 == 0){
+								regraShutdown = true;
+							}
+						},300000);
+					}
+					//regra shutdown
 					var dataObj = new Date();
 					
-					var data_hoje = (dataObj.getMonth()+1)+"/"+dataObj.getDate();
-					var hora_hoje = dataObj.getHours()+":"+dataObj.getMinutes();
+					data_hoje = (dataObj.getMonth()+1)+"/"+dataObj.getDate();
+					hora_hoje = dataObj.getHours()+":"+dataObj.getMinutes();
 
 					var row = [data_hoje,hora_hoje, jsonData.luminosidade, jsonData.luminosidade2, jsonData.movimentacao, jsonData.movimentacao2,jsonData.temperatura, jsonData.temperatura2].join(";")+"\n"; 	
 
@@ -228,6 +250,10 @@ app.get('/desliga_luz3', function(req, res) {
 
 
 app.get('/status', function(req, res) {
+	if(jsonData !== null){
+		jsonData.data = data_hoje;
+		jsonData.hora = hora_hoje;
+	}
     res.send(jsonData);
 
 });
