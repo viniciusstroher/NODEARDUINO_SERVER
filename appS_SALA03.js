@@ -1,12 +1,12 @@
 var jsonData = null;
-var portaWS = 8092;
-var portaAPI = 82;
+var portaWS = 8091;
+var portaAPI = 81;
 var lugar = "Sala 03";
 
 var net = require('net');
 var fs  = require('fs');
 
-var head = ['dia','hora', 'corrente'].join(";")+"\n";	
+var head = ['dia','hora', 'corrente','potencia'].join(";")+"\n";	
 try{
 	fs.appendFile(lugar+'.csv', head, function (err) {
 		if (err) {
@@ -36,12 +36,12 @@ function startServer(){
 					var jsonDataAux = JSON.parse(data.toString());
 					jsonData = jsonDataAux;
 					
-
+					var dataObj = new Date();
 					var data_hoje = (dataObj.getMonth()+1)+"/"+dataObj.getDate();
 					var hora_hoje = dataObj.getHours()+":"+dataObj.getMinutes();
 
 
-					var head = [data_hoje,hora_hoje, jsonData.corrente].join(";")+"\n";	
+					var head = [data_hoje,hora_hoje, jsonData.corrente,parseFloat(jsonData.corrente)*220].join(";")+"\n";	
 					try{
 						fs.appendFile(lugar+'.csv', head, function (err) {
 							if (err) {
