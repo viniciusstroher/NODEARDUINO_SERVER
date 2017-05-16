@@ -5,10 +5,20 @@ var lugar = "Sala 03";
 
 var net = require('net');
 var fs  = require('fs');
-var csv = require('ya-csv');
 
-var writer = csv.createCsvStreamWriter(fs.createWriteStream(lugar+'.csv'));  
-writer.writeRecord(['tempo', 'corrente']); 	
+var head = ['dia','hora', 'corrente'].join(";")+"\n";	
+try{
+	fs.appendFile(lugar+'.csv', head, function (err) {
+		if (err) {
+				// append failed
+		} else {
+				// done
+		}
+	});
+	    	
+}catch(ex){
+			
+}
 
 function startServer(){
 	try{
@@ -26,13 +36,24 @@ function startServer(){
 					var jsonDataAux = JSON.parse(data.toString());
 					jsonData = jsonDataAux;
 					
+
+					var data_hoje = (dataObj.getMonth()+1)+"/"+dataObj.getDate();
+					var hora_hoje = dataObj.getHours()+":"+dataObj.getMinutes();
+
+
+					var head = [data_hoje,hora_hoje, jsonData.corrente].join(";")+"\n";	
 					try{
-				    	var writer = csv.createCsvStreamWriter(fs.createWriteStream(lugar+'.csv'));  
-						writer.writeRecord([new Date().toISOString(), jsonData.corrente]); 
-				    	
+						fs.appendFile(lugar+'.csv', head, function (err) {
+							if (err) {
+									// append failed
+							} else {
+									// done
+							}
+						});
+						    	
 					}catch(ex){
-						
-					}	
+								
+					}
 				}catch(ex){
 					//console.log(ex);
 				}

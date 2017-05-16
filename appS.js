@@ -12,12 +12,23 @@ var ligarProjetor 	   = false;
 
 var jsonData = null;
 
-var csv = require('ya-csv');
 var net = require('net');
 var fs  = require('fs');
 
-var writer = csv.createCsvStreamWriter(fs.createWriteStream('mestre.csv'));  
-writer.writeRecord(['tempo', 'luminosidade 1', 'luminosidade 2', 'pir 1' , 'pir 2','temperatura 1', 'temperatura 2']); 	
+
+var head = ['dia','hora', 'luminosidade 1', 'luminosidade 2', 'pir 1' , 'pir 2','temperatura 1', 'temperatura 2'].join(";")+"\n";	
+try{
+	fs.appendFile('mestre.csv', head, function (err) {
+		if (err) {
+				// append failed
+		} else {
+				// done
+		}
+	});
+	    	
+}catch(ex){
+			
+}
 
 function startServer(){
 	try{
@@ -94,10 +105,25 @@ function startServer(){
 					var jsonDataAux = JSON.parse(data.toString());
 
 					jsonData = jsonDataAux;
+					var dataObj = new Date();
+					
+					var data_hoje = (dataObj.getMonth()+1)+"/"+dataObj.getDate();
+					var hora_hoje = dataObj.getHours()+":"+dataObj.getMinutes();
 
-					var writer = csv.createCsvStreamWriter(fs.createWriteStream('mestre.csv'));  
-					writer.writeRecord([new Date().toISOString(), jsonData.luminosidade, jsonData.luminosidade2, jsonData.movimentacao, jsonData.movimentacao2,jsonData.temperatura, jsonData.temperatura2]); 	
+					var row = [data_hoje,hora_hoje, jsonData.luminosidade, jsonData.luminosidade2, jsonData.movimentacao, jsonData.movimentacao2,jsonData.temperatura, jsonData.temperatura2].join(";")+"\n"; 	
 
+					try{
+						fs.appendFile('mestre.csv', row, function (err) {
+							if (err) {
+									// append failed
+							} else {
+									// done
+							}
+						});
+						    	
+					}catch(ex){
+								
+					}
 
 				}catch(ex){
 					//console.log(ex);
