@@ -3,6 +3,10 @@ var portaWS = 8091;
 var portaAPI = 81;
 var lugar = "Sala 03";
 
+
+var data_hoje = '';
+var hora_hoje = '';
+
 var net = require('net');
 var fs  = require('fs');
 
@@ -37,8 +41,8 @@ function startServer(){
 					jsonData = jsonDataAux;
 					
 					var dataObj = new Date();
-					var data_hoje = (dataObj.getMonth()+1)+"/"+dataObj.getDate();
-					var hora_hoje = dataObj.getHours()+":"+dataObj.getMinutes();
+					data_hoje = (dataObj.getMonth()+1)+"/"+dataObj.getDate();
+					hora_hoje = dataObj.getHours()+":"+dataObj.getMinutes();
 
 
 					var head = [data_hoje,hora_hoje, jsonData.corrente,parseFloat(jsonData.corrente)*220].join(";")+"\n";	
@@ -103,8 +107,12 @@ var app = express();
 });
 
 app.get('/corrente', function(req, res) {
+	if(jsonData == null){
+		jsonData = {};
+		jsonData.corrente = 0;
+	}
 	
-    res.send({corrente : jsonData.corrente});
+    res.send({corrente : jsonData.hasOwnProperty('corrente') ? jsonData.corrente : 0 , data:data_hoje, hora:hora_hoje});
 });
 
 app.listen(portaAPI);
