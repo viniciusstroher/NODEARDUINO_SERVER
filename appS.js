@@ -284,14 +284,15 @@ app.get('/desliga_luz3', function(req, res) {
 
 
 app.get('/status', function(req, res) {
-	console.log(jsonData);
+
 	if(jsonData !== null){
 		jsonData.data = data_hoje;
 		jsonData.hora = hora_hoje;
 	}else{
+		
+		jsonData = {};
 		jsonData.data = data_hoje;
 		jsonData.hora = hora_hoje;
-		jsonData = {};
 	}
     res.send(jsonData);
 
