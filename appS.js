@@ -29,6 +29,11 @@ var ldr1Corte = 200;
 var ldt2Corte = 600;
 
 var head = ['dia','hora', 'luminosidade 1', 'luminosidade 2', 'pir 1' , 'pir 2','temperatura 1', 'temperatura 2'].join(";")+"\n";	
+
+var dataObj = new Date();					
+data_hoje = (dataObj.getMonth()+1)+"/"+dataObj.getDate();
+hora_hoje = dataObj.getHours()+":"+dataObj.getMinutes();
+
 try{
 	fs.appendFile('mestre.csv', head, function (err) {
 		if (err) {
@@ -279,9 +284,14 @@ app.get('/desliga_luz3', function(req, res) {
 
 
 app.get('/status', function(req, res) {
+	console.log(jsonData);
 	if(jsonData !== null){
 		jsonData.data = data_hoje;
 		jsonData.hora = hora_hoje;
+	}else{
+		jsonData.data = data_hoje;
+		jsonData.hora = hora_hoje;
+		jsonData = {};
 	}
     res.send(jsonData);
 
