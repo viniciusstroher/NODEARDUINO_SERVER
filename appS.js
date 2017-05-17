@@ -137,6 +137,7 @@ function startServer(){
 					//REGRA SHUTDOWN
 					if(!processando_pir){
 						processando_pir = true;
+						
 						setTimeout(function(){
 							
 							if(pir_1 == 0 && pir_2 == 0){
@@ -157,7 +158,8 @@ function startServer(){
 								}
 							}
 
-
+							processando_pir = false;
+						
 						},6000);
 					}
 					//regra shutdown
