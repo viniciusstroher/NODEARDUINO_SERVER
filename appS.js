@@ -284,5 +284,24 @@ app.get('/status', function(req, res) {
 });
 
 
+app.get('/ldr1', function(req, res) {
+	try{
+		ldr1Corte = req.query.valor;
+		res.send({retorno: 'valor alterado '+ldr1Corte+'.'});
+	}catch(ex){
+		 res.send({retorno: 'valor nao alterado.'});
+	}
+});
+
+app.get('/ldr2', function(req, res) {
+	try{
+		ldr2Corte = req.query.valor;
+		res.send({retorno: 'valor alterado '+ldr2Corte+'.'});
+	}catch(ex){
+		 res.send({retorno: 'valor nao alterado.'});
+	}
+});
+
+
 app.listen(80);
 console.log('API MOBILE RODANDO NA 80.');
