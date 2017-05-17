@@ -21,8 +21,12 @@ var hora_hoje = '';
 var processando_pir = false;
 var pir_1 			= 0;
 var pir_2 			= 0;
-var regraShutdown   = false;
 
+var regraShutdown   = false;
+var upAll 			= false;
+
+var ldr1Corte = 200;
+var ldt2Corte = 600;
 
 var head = ['dia','hora', 'luminosidade 1', 'luminosidade 2', 'pir 1' , 'pir 2','temperatura 1', 'temperatura 2'].join(";")+"\n";	
 try{
@@ -46,10 +50,18 @@ function startServer(){
 		var server = net.createServer(function(socket) {
 			var connect_log = '[Log - '+new Date().toISOString()+']Conectando no servidor.\r\n';
 			console.log(connect_log);
+			
 			if(regraShutdown){
 				regraShutdown = false;
 				socket.write('shutdown_relays');
 			}
+
+			if(upAll){
+				upAll = false;
+				socket.write('up_app_relays');
+			}
+
+
 			if(ligaArCondicionado){
 				ligaArCondicionado = false;
 				socket.write('liga_ar_condicionado');
@@ -121,10 +133,22 @@ function startServer(){
 					if(!processando_pir){
 						processando_pir = true;
 						setTimeout(function(){
-							console.log('regra shutdown ',pir_1,pir_2);
+							
 							if(pir_1 == 0 && pir_2 == 0){
-								regraShutdown = true;
+								console.log('regra shutdown ',pir_1,pir_2);
+								try{
+									if(jsonData.luminosidade > ldr1Corte && jsonData.luminosidade2 > ldt2Corte){
+										regraShutdown = true;
+									}
+								}catch(ex){
+									upAll = true;
+								}
+								
+							}else{
+
 							}
+
+
 						},6000);
 					}
 					//regra shutdown
