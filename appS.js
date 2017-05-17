@@ -145,7 +145,11 @@ function startServer(){
 								}
 								
 							}else{
-
+								if(jsonData.luminosidade > ldr1Corte && jsonData.luminosidade2 > ldt2Corte){
+										regraShutdown = true;
+								}else{
+									upAll = true;
+								}
 							}
 
 
