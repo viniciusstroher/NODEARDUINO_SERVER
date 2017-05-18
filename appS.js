@@ -28,7 +28,12 @@ var upAll 			= false;
 var ldr1Corte = 200;
 var ldt2Corte = 600;
 
+var ms = 6000;
+var amostras = 6;
+
 var head = ['dia','hora', 'luminosidade 1', 'luminosidade 2', 'pir 1' , 'pir 2','temperatura 1', 'temperatura 2'].join(";")+"\n";	
+
+var sem_presenca = 0;
 
 var dataObj = new Date();					
 data_hoje = (dataObj.getMonth()+1)+"/"+dataObj.getDate();
@@ -54,9 +59,10 @@ function startServer(){
 		
 		var server = net.createServer(function(socket) {
 			var connect_log = '[Log - '+new Date().toISOString()+']Conectando no servidor.\r\n';
-			console.log(connect_log);
+			//console.log(connect_log);
 			
 			if(regraShutdown){
+				console.log('shutdown_relays');
 				regraShutdown = false;
 				socket.write('shutdown_relays');
 			}
@@ -125,7 +131,7 @@ function startServer(){
 			}
 			
 			socket.on('data', function (data) {
-				console.log(data.toString());
+				//console.log(data.toString());
 				try{
 					
 					var jsonDataAux = JSON.parse(data.toString());
@@ -139,28 +145,43 @@ function startServer(){
 						processando_pir = true;
 						
 						setTimeout(function(){
-							
+							console.log('PIRS',pir_1,pir_2);
+
 							if(pir_1 == 0 && pir_2 == 0){
-								console.log('regra shutdown ',pir_1,pir_2);
-								try{
+								sem_presenca +=1;
+								console.log('sem_presenca:',sem_presenca+' de '+amostras);
+								/*try{
 									if(jsonData.luminosidade > ldr1Corte && jsonData.luminosidade2 > ldt2Corte){
 										regraShutdown = true;
+										console.log("###### regraShutdown",regraShutdown,'Luminosidade',jsonData.luminosidade +">"+ldr1Corte,'Luminosidade2',jsonData.luminosidade2+">"+ldt2Corte);
 									}
 								}catch(ex){
 									upAll = true;
-								}
+									console.log("######err upAll",upAll,'Luminosidade',jsonData.luminosidade+">"+ldr1Corte,'Luminosidade2',jsonData.luminosidade2+">"+ldt2Corte);
 								
+								}*/
+								if(sem_presenca > amostras){
+									sem_presenca = 0;
+									regraShutdown = true;
+									console.log("###### regraShutdown",regraShutdown,'Luminosidade',jsonData.luminosidade +">"+ldr1Corte,'Luminosidade2',jsonData.luminosidade2+">"+ldt2Corte);
+								}
 							}else{
 								if(jsonData.luminosidade > ldr1Corte && jsonData.luminosidade2 > ldt2Corte){
 										regraShutdown = true;
+										console.log("###### regraShutdown",regraShutdown,'Luminosidade',jsonData.luminosidade +">"+ldr1Corte ,'Luminosidade2',jsonData.luminosidade2 +">"+ldt2Corte);
+								
 								}else{
 									upAll = true;
+									console.log("###### upAll",upAll,'Luminosidade',jsonData.luminosidade+">"+ldr1Corte,'Luminosidade2',jsonData.luminosidade2+">"+ldt2Corte);
+								
 								}
+								sem_presenca = 0;
 							}
-
+							
 							processando_pir = false;
+							
+						},ms);
 						
-						},6000);
 					}
 					//regra shutdown
 					var dataObj = new Date();
@@ -188,7 +209,7 @@ function startServer(){
 				}
 
 				var log = '[Log - '+new Date().toISOString()+'] \n : '+data.toString('utf8')+"\r\n";
-			    console.log(log);
+			    //console.log(log);
 
 			    try{
 					fs.appendFile('log_arduino.txt', log, function (err) {
@@ -304,7 +325,7 @@ app.get('/status', function(req, res) {
 app.get('/ldr1', function(req, res) {
 	try{
 		ldr1Corte = req.query.valor;
-		res.send({retorno: 'valor alterado '+ldr1Corte+'.'});
+		res.send({retorno: 'valor alterado '+ldr1Corte+' @ '+req.query.valor+'.'});
 	}catch(ex){
 		 res.send({retorno: 'valor nao alterado.'});
 	}
@@ -312,8 +333,26 @@ app.get('/ldr1', function(req, res) {
 
 app.get('/ldr2', function(req, res) {
 	try{
-		ldr2Corte = req.query.valor;
-		res.send({retorno: 'valor alterado '+ldr2Corte+'.'});
+		ldt2Corte = req.query.valor;
+		res.send({retorno: 'valor alterado '+ldt2Corte+' @ '+req.query.valor+'.'});
+	}catch(ex){
+		 res.send({retorno: 'valor nao alterado.'});
+	}
+});
+
+app.get('/ms', function(req, res) {
+	try{
+		ms = req.query.valor;
+		res.send({retorno: 'valor alterado '+ms+' @ '+req.query.valor+'.'});
+	}catch(ex){
+		 res.send({retorno: 'valor nao alterado.'});
+	}
+});
+
+app.get('/amostras', function(req, res) {
+	try{
+		amostras = req.query.valor;
+		res.send({retorno: 'valor alterado '+amostras+' @ '+req.query.valor+'.'});
 	}catch(ex){
 		 res.send({retorno: 'valor nao alterado.'});
 	}
