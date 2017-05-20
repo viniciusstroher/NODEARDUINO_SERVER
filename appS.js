@@ -33,6 +33,9 @@ var amostras = 6;
 
 //var head = ['dia','hora', 'luminosidade 1', 'luminosidade 2', 'pir 1' , 'pir 2','temperatura 1', 'temperatura 2'].join(";")+"\n";	
 
+var ldr1_fator = 0.2;
+var ldr2_fator = 0.2;
+
 var sem_presenca = 0;
 
 var dataObj = new Date();					
@@ -146,6 +149,7 @@ function startServer(){
 						processando_pir = true;
 						
 						setTimeout(function(){
+							console.log('Fator',ldr1_fator,ldr2_fator);
 							console.log('PIRS',pir_1,pir_2);
 
 							if(pir_1 == 0 && pir_2 == 0){
@@ -349,6 +353,25 @@ app.get('/amostras', function(req, res) {
 		 res.send({retorno: 'valor nao alterado.'});
 	}
 });
+
+app.get('/ldr1_fator', function(req, res) {
+	try{
+		ldr1_fator = parseFloat(req.query.valor);
+		res.send({retorno: 'valor alterado '+ldr1_fator+' @ '+req.query.valor+'.'});
+	}catch(ex){
+		 res.send({retorno: 'valor nao alterado.'});
+	}
+});
+
+app.get('/ldr2_fator', function(req, res) {
+	try{
+		ldr2_fator = parseFloat(req.query.valor);
+		res.send({retorno: 'valor alterado '+ldr1_fator+' @ '+req.query.valor+'.'});
+	}catch(ex){
+		 res.send({retorno: 'valor nao alterado.'});
+	}
+});
+
 
 
 app.listen(80);
