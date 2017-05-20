@@ -33,8 +33,8 @@ var amostras = 6;
 
 //var head = ['dia','hora', 'luminosidade 1', 'luminosidade 2', 'pir 1' , 'pir 2','temperatura 1', 'temperatura 2'].join(";")+"\n";	
 
-var ldr1_fator = 0.2;
-var ldr2_fator = 0.2;
+var ldr1_fator = 0.6875;
+var ldr2_fator = 0.1930;
 
 var sem_presenca = 0;
 
