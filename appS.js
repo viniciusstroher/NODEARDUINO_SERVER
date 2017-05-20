@@ -31,7 +31,7 @@ var ldt2Corte = 600;
 var ms = 6000;
 var amostras = 6;
 
-var head = ['dia','hora', 'luminosidade 1', 'luminosidade 2', 'pir 1' , 'pir 2','temperatura 1', 'temperatura 2'].join(";")+"\n";	
+//var head = ['dia','hora', 'luminosidade 1', 'luminosidade 2', 'pir 1' , 'pir 2','temperatura 1', 'temperatura 2'].join(";")+"\n";	
 
 var sem_presenca = 0;
 
@@ -39,7 +39,7 @@ var dataObj = new Date();
 data_hoje = (dataObj.getMonth()+1)+"/"+dataObj.getDate();
 hora_hoje = dataObj.getHours()+":"+dataObj.getMinutes();
 
-try{
+/*try{
 	fs.appendFile('mestre.csv', head, function (err) {
 		if (err) {
 				// append failed
@@ -51,6 +51,7 @@ try{
 }catch(ex){
 			
 }
+*/
 
 function startServer(){
 	try{
@@ -150,23 +151,14 @@ function startServer(){
 							if(pir_1 == 0 && pir_2 == 0){
 								sem_presenca +=1;
 								console.log('sem_presenca:',sem_presenca+' de '+amostras);
-								/*try{
-									if(jsonData.luminosidade > ldr1Corte && jsonData.luminosidade2 > ldt2Corte){
-										regraShutdown = true;
-										console.log("###### regraShutdown",regraShutdown,'Luminosidade',jsonData.luminosidade +">"+ldr1Corte,'Luminosidade2',jsonData.luminosidade2+">"+ldt2Corte);
-									}
-								}catch(ex){
-									upAll = true;
-									console.log("######err upAll",upAll,'Luminosidade',jsonData.luminosidade+">"+ldr1Corte,'Luminosidade2',jsonData.luminosidade2+">"+ldt2Corte);
-								
-								}*/
+						
 								if(sem_presenca > amostras){
 									sem_presenca = 0;
 									regraShutdown = true;
 									console.log("###### regraShutdown",regraShutdown,'Luminosidade',jsonData.luminosidade +">"+ldr1Corte,'Luminosidade2',jsonData.luminosidade2+">"+ldt2Corte);
 								}
 							}else{
-								if(jsonData.luminosidade > ldr1Corte && jsonData.luminosidade2 > ldt2Corte){
+								if(parseInt(jsonData.luminosidade) > parseInt(ldr1Corte) &&  parseInt(jsonData.luminosidade2) > parseInt(ldt2Corte)){
 										regraShutdown = true;
 										console.log("###### regraShutdown",regraShutdown,'Luminosidade',jsonData.luminosidade +">"+ldr1Corte ,'Luminosidade2',jsonData.luminosidade2 +">"+ldt2Corte);
 								
