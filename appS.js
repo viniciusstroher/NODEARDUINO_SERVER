@@ -142,8 +142,8 @@ function startServer(){
 
 					jsonData = jsonDataAux;
 					//FATOR DE CORRECAO
-					console.log(jsonData.luminosidade,'@',ldr1_fator,'@',jsonData.luminosidade*ldr1_fator);
-					console.log(jsonData.luminosidade2,'@',ldr2_fator,'@',jsonData.luminosidade2*ldr2_fator);
+					//console.log(jsonData.luminosidade,'@',ldr1_fator,'@',jsonData.luminosidade*ldr1_fator);
+					//console.log(jsonData.luminosidade2,'@',ldr2_fator,'@',jsonData.luminosidade2*ldr2_fator);
 
 					jsonData.luminosidade  = parseFloat(jsonData.luminosidade)  * ldr1_fator; 
 					jsonData.luminosidade2 = parseFloat(jsonData.luminosidade2) * ldr2_fator; 
