@@ -184,7 +184,7 @@ function startServer(){
 					var row = [data_hoje,hora_hoje, jsonData.luminosidade, jsonData.luminosidade2, jsonData.movimentacao, jsonData.movimentacao2,jsonData.temperatura, jsonData.temperatura2].join(";")+"\n"; 	
 
 					try{
-						fs.appendFile('mestre.csv', row, function (err) {
+						fs.appendFile('/home/pi/NODEARDUINO_SERVER/mestre.csv', row, function (err) {
 							if (err) {
 									// append failed
 							} else {

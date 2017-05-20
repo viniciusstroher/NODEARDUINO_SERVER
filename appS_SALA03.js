@@ -47,7 +47,7 @@ function startServer(){
 
 					var head = [data_hoje,hora_hoje, jsonData.corrente,parseFloat(jsonData.corrente)*220].join(";")+"\n";	
 					try{
-						fs.appendFile(lugar+'.csv', head, function (err) {
+						fs.appendFile('/home/pi/NODEARDUINO_SERVER/'+lugar+'.csv', head, function (err) {
 							if (err) {
 									// append failed
 							} else {
