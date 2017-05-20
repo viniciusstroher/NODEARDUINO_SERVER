@@ -141,9 +141,13 @@ function startServer(){
 					var jsonDataAux = JSON.parse(data.toString());
 
 					jsonData = jsonDataAux;
-					
+					//FATOR DE CORRECAO
+					jsonData.luminosidade  = jsonData.luminosidade  * ldr1_fator; 
+					jsonData.luminosidade2 = jsonData.luminosidade2 * ldr2_fator; 
+
 					pir_1 = jsonData.movimentacao;
 					pir_2 = jsonData.movimentacao2;
+
 					//REGRA SHUTDOWN
 					if(!processando_pir){
 						processando_pir = true;
