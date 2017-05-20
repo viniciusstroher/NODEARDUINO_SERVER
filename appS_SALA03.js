@@ -10,7 +10,7 @@ var hora_hoje = '';
 var net = require('net');
 var fs  = require('fs');
 
-var head = ['dia','hora', 'corrente','potencia'].join(";")+"\n";	
+/*var head = ['dia','hora', 'corrente','potencia'].join(";")+"\n";	
 try{
 	fs.appendFile(lugar+'.csv', head, function (err) {
 		if (err) {
@@ -22,7 +22,7 @@ try{
 	    	
 }catch(ex){
 			
-}
+}*/
 
 function startServer(){
 	try{
