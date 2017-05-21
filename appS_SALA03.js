@@ -39,7 +39,7 @@ function startServer(){
 					
 					var jsonDataAux = JSON.parse(data.toString());
 					jsonData = jsonDataAux;
-					
+					jsonData.corrente = Math.round(jsonData.corrente);
 					var dataObj = new Date();
 					data_hoje = (dataObj.getMonth()+1)+"/"+dataObj.getDate();
 					hora_hoje = dataObj.getHours()+":"+dataObj.getMinutes();
