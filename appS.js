@@ -135,7 +135,7 @@ function startServer(){
 			}
 			
 			socket.on('data', function (data) {
-				//console.log(data.toString());
+				console.log(data.toString());
 				try{
 					
 					var jsonDataAux = JSON.parse(data.toString());
