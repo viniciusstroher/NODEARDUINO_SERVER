@@ -43,7 +43,7 @@ function startServer(){
 					hora_hoje = dataObj.getHours()+":"+dataObj.getMinutes();
 
 					
-					var head = [data_hoje,hora_hoje, jsonData.corrente,parseFloat(jsonData.corrente)*220].join(";")+"\n";	
+					var head = [data_hoje,hora_hoje, jsonData.corrente,Math.round(parseFloat(jsonData.corrente)*220)].join(";")+"\n";	
 			
 					try{
 						fs.appendFile('/home/pi/NODEARDUINO_SERVER/'+lugar+'.csv', head, function (err) {
