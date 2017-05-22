@@ -37,13 +37,13 @@ function startServer(){
 					
 					var jsonDataAux = JSON.parse(data.toString());
 					jsonData = jsonDataAux;
-					jsonData.corrente = Math.round(jsonData.corrente);
+
 					var dataObj = new Date();
 					data_hoje = (dataObj.getMonth()+1)+"/"+dataObj.getDate();
 					hora_hoje = dataObj.getHours()+":"+dataObj.getMinutes();
 
 					
-					var head = [data_hoje,hora_hoje, jsonData.corrente,Math.round(parseFloat(jsonData.corrente)*220)].join(";")+"\n";	
+					var head = [data_hoje,hora_hoje, jsonData.corrente,parseFloat(jsonData.corrente).toFixed(2)*220].join(";")+"\n";	
 			
 					try{
 						fs.appendFile('/home/pi/NODEARDUINO_SERVER/'+lugar+'.csv', head, function (err) {
