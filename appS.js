@@ -38,6 +38,10 @@ var ldr2_fator = 0.1930;
 
 var sem_presenca = 0;
 
+var pir_desativado = false;
+var pir_armar_time = 60000;
+var processando_pir_desativado = false;
+
 var dataObj = new Date();					
 data_hoje = (dataObj.getMonth()+1)+"/"+dataObj.getDate();
 hora_hoje = dataObj.getHours()+":"+dataObj.getMinutes();
@@ -152,13 +156,13 @@ function startServer(){
 					pir_2 = jsonData.movimentacao2;
 
 					//REGRA SHUTDOWN
-					if(!processando_pir){
+					if(!processando_pir && !pir_desativado){
 						processando_pir = true;
 						
 						setTimeout(function(){
 							console.log('Fator',ldr1_fator,ldr2_fator);
 							console.log('PIRS',pir_1,pir_2);
-
+							
 							if(pir_1 == 0 && pir_2 == 0){
 								sem_presenca +=1;
 								console.log('sem_presenca:',sem_presenca+' de '+amostras);
@@ -185,6 +189,14 @@ function startServer(){
 							
 						},ms);
 						
+					}else{
+					     if(!processando_pir_desativado){
+						processando_pir_desativado = true;
+						setTimeout(function(){
+							
+							pir_desativado = false;
+						},pir_armar_time);
+					     }
 					}
 					//regra shutdown
 					var dataObj = new Date();
@@ -379,6 +391,24 @@ app.get('/ldr2_fator', function(req, res) {
 	}
 });
 
+app.get('/pir_mode', function(req, res) {
+	try{
+		pir_desativado = req.query.valor;
+		res.send({retorno: 'valor alterado '+pir_desativado+' @ '+req.query.valor+'.'});
+	}catch(ex){
+		 res.send({retorno: 'valor nao alterado.'});
+	}
+});
+
+
+app.get('/pir_re_armar', function(req, res) {
+	try{
+		pir_armar_time = req.query.valor;
+		res.send({retorno: 'valor alterado '+pir_armar_time+' @ '+req.query.valor+'.'});
+	}catch(ex){
+		 res.send({retorno: 'valor nao alterado.'});
+	}
+});
 
 
 app.listen(80);
