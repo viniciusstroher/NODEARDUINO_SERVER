@@ -42,6 +42,9 @@ var dataObj = new Date();
 data_hoje = (dataObj.getMonth()+1)+"/"+dataObj.getDate();
 hora_hoje = dataObj.getHours()+":"+dataObj.getMinutes();
 
+var contagem_csv = 5*60000;
+var contagem_csv_contando = false;
+
 /*try{
 	fs.appendFile('mestre.csv', head, function (err) {
 		if (err) {
@@ -187,26 +190,35 @@ function startServer(){
 						
 					}
 					//regra shutdown
-					var dataObj = new Date();
-					
-					data_hoje = (dataObj.getMonth()+1)+"/"+dataObj.getDate();
-					hora_hoje = dataObj.getHours()+":"+dataObj.getMinutes();
 
-					var row = [data_hoje,hora_hoje, jsonData.luminosidade, jsonData.luminosidade2, jsonData.movimentacao, jsonData.movimentacao2,jsonData.temperatura, jsonData.temperatura2].join(";")+"\n"; 	
 
-					try{
-						fs.appendFile('/home/pi/NODEARDUINO_SERVER/mestre.csv', row, function (err) {
-							if (err) {
-									// append failed
-							} else {
-									// done
+					if(!contagem_csv_contando){
+						var contagem_csv_contando = true;
+						
+						setTimeout(function(){;
+							var contagem_csv_contando = false;
+
+							var dataObj = new Date();
+							
+							data_hoje = (dataObj.getMonth()+1)+"/"+dataObj.getDate();
+							hora_hoje = dataObj.getHours()+":"+dataObj.getMinutes();
+
+							var row = [data_hoje,hora_hoje, jsonData.luminosidade, jsonData.luminosidade2, jsonData.movimentacao, jsonData.movimentacao2,jsonData.temperatura, jsonData.temperatura2].join(";")+"\n"; 	
+
+							try{
+								fs.appendFile('/home/pi/NODEARDUINO_SERVER/mestre.csv', row, function (err) {
+									if (err) {
+											// append failed
+									} else {
+											// done
+									}
+								});
+								    	
+							}catch(ex){
+										
 							}
-						});
-						    	
-					}catch(ex){
-								
+						},contagem_csv);
 					}
-
 				}catch(ex){
 					//console.log(ex);
 				}
@@ -374,6 +386,15 @@ app.get('/ldr2_fator', function(req, res) {
 	try{
 		ldr2_fator = parseFloat(req.query.valor);
 		res.send({retorno: 'valor alterado '+ldr1_fator+' @ '+req.query.valor+'.'});
+	}catch(ex){
+		 res.send({retorno: 'valor nao alterado.'});
+	}
+});
+
+app.get('/contagem_csv', function(req, res) {
+	try{
+		contagem_csv = parseInt(req.query.valor);
+		res.send({retorno: 'valor alterado '+contagem_csv+' @ '+req.query.valor+'.'});
 	}catch(ex){
 		 res.send({retorno: 'valor nao alterado.'});
 	}
