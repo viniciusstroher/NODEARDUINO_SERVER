@@ -206,7 +206,12 @@ function startServer(){
 				
 			    try{
 			    	var log = '[Log - '+new Date().toISOString()+'] \n : '+data.toString('utf8')+"\r\n";
-					fs.appendFile('log_arduino.txt', log, function (err) {});
+					if(os.platform() != "win32"){
+						fs.appendFile('/home/pi/NODEARDUINO_SERVER/log_arduino.txt', log, function (err) {});
+					}else{
+						fs.appendFile('log_arduino.txt', log, function (err) {});
+					
+					}
 				}catch(ex){
 					
 				}
