@@ -31,17 +31,19 @@ function startServer(){
 					jsonData = jsonDataAux;
 					
 					if(!contagem_csv_contando){
-						var contagem_csv_contando = true;
+						contagem_csv_contando = true;
 						
 						setTimeout(function(){
-							var contagem_csv_contando = false;
+							contagem_csv_contando = false;
 
 							var dataObj = new Date();
 							data_hoje = (dataObj.getMonth()+1)+"/"+dataObj.getDate();
 							hora_hoje = dataObj.getHours()+":"+dataObj.getMinutes();
 
 
-							var head = [data_hoje,hora_hoje, jsonData.corrente,parseFloat(jsonData.corrente).toFixed(2)*220].join(";")+"\n";	
+							var head = [data_hoje,hora_hoje,
+										parseFloat(jsonData.corrente).toFixed(2),
+										parseFloat(jsonData.corrente).toFixed(2)*220].join(";")+"\n";	
 							try{
 								if(os.platform() != "win32"){
 									fs.appendFile('/home/pi/NODEARDUINO_SERVER/'+lugar+'.csv', head, function (err) {});

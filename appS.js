@@ -126,8 +126,8 @@ function startServer(){
 
 					jsonData = jsonDataAux;
 					//FATOR DE CORRECAO
-					jsonData.luminosidade  = (parseFloat(jsonData.luminosidade).toFixed(2)  * ldr1_fator); 
-					jsonData.luminosidade2 = (parseFloat(jsonData.luminosidade2).toFixed(2) * ldr2_fator); 
+					jsonData.luminosidade  = parseFloat(parseFloat(jsonData.luminosidade).toFixed(2)  * parseFloat(ldr1_fator).toFixed(2)).toFixed(2); 
+					jsonData.luminosidade2 = parseFloat(parseFloat(jsonData.luminosidade2).toFixed(2) * parseFloat(ldr2_fator).toFixed(2)).toFixed(2); 
 					
 					pir_1 = jsonData.movimentacao;
 					pir_2 = jsonData.movimentacao2;
@@ -176,13 +176,12 @@ function startServer(){
 					//regra shutdown
 
 					if(!contagem_csv_contando){
-						var contagem_csv_contando = true;
+						contagem_csv_contando = true;
 						
 						setTimeout(function(){
-							var contagem_csv_contando = false;
+							contagem_csv_contando = false;
 
 							var dataObj = new Date();
-							
 							data_hoje = (dataObj.getMonth()+1)+"/"+dataObj.getDate();
 							hora_hoje = dataObj.getHours()+":"+dataObj.getMinutes();
 
@@ -203,18 +202,6 @@ function startServer(){
 					//console.log(ex);
 				}
 
-				
-			    try{
-			    	var log = '[Log - '+new Date().toISOString()+'] \n : '+data.toString('utf8')+"\r\n";
-					if(os.platform() != "win32"){
-						fs.appendFile('/home/pi/NODEARDUINO_SERVER/log_arduino.txt', log, function (err) {});
-					}else{
-						fs.appendFile('log_arduino.txt', log, function (err) {});
-					
-					}
-				}catch(ex){
-					
-				}
 			});
 
 			socket.on('error', function (data) {

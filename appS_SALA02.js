@@ -30,15 +30,17 @@ function startServer(){
 					jsonData = jsonDataAux;
 						
 					if(!contagem_csv_contando){
-						var contagem_csv_contando = true;
+						contagem_csv_contando = true;
 						
 						var dataObj = new Date();
 						data_hoje = (dataObj.getMonth()+1)+"/"+dataObj.getDate();
 						hora_hoje = dataObj.getHours()+":"+dataObj.getMinutes();
 
 						setTimeout(function(){
-							var contagem_csv_contando = false;
-							var head = [data_hoje,hora_hoje, jsonData.corrente,parseFloat(jsonData.corrente).toFixed(2)*220].join(";")+"\n";	
+							contagem_csv_contando = false;
+							var head = [data_hoje,hora_hoje, 
+										parseFloat(jsonData.corrente).toFixed(2),
+										parseFloat(jsonData.corrente).toFixed(2)*220].join(";")+"\n";	
 			
 							try{
 								if(os.platform() != "win32"){
