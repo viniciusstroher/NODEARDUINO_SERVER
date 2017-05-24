@@ -102,5 +102,14 @@ app.get('/corrente', function(req, res) {
     res.send({corrente : jsonData.hasOwnProperty('corrente') ? jsonData.corrente : 0 , data:data_hoje, hora:hora_hoje});
 });
 
+app.get('/contagem_csv', function(req, res) {
+	try{
+		contagem_csv = parseInt(req.query.valor);
+		res.send({retorno: 'valor alterado '+contagem_csv+' @ '+req.query.valor+'.'});
+	}catch(ex){
+		 res.send({retorno: 'valor nao alterado.'});
+	}
+});
+
 app.listen(portaAPI);
 console.log('API MOBILE RODANDO NA '+portaAPI+'.');
