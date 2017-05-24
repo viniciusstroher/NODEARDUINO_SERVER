@@ -185,7 +185,14 @@ function startServer(){
 							data_hoje = (dataObj.getMonth()+1)+"/"+dataObj.getDate();
 							hora_hoje = dataObj.getHours()+":"+dataObj.getMinutes();
 
-							var row = [data_hoje,hora_hoje, jsonData.luminosidade, jsonData.luminosidade2, jsonData.movimentacao, jsonData.movimentacao2,jsonData.temperatura, jsonData.temperatura2].join(";")+"\n"; 	
+							var row = [data_hoje,
+									  hora_hoje, 
+									  jsonData.luminosidade, 
+									  jsonData.luminosidade2, 
+									  jsonData.movimentacao, 
+									  jsonData.movimentacao2,
+									  jsonData.temperatura, 
+									  jsonData.temperatura2].join(";")+"\n"; 	
 
 							try{
 								if(os.platform() != "win32"){
