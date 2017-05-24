@@ -26,10 +26,7 @@ function startServer(){
 					
 					var jsonDataAux = JSON.parse(data.toString());
 					jsonData = jsonDataAux;
-					jsonData.corrente = Math.round(jsonData.corrente);
-					
-
-					
+						
 					if(!contagem_csv_contando){
 						var contagem_csv_contando = true;
 						
@@ -39,7 +36,7 @@ function startServer(){
 
 						setTimeout(function(){
 							var contagem_csv_contando = false;
-							var head = [data_hoje,hora_hoje, jsonData.corrente,Math.round(parseFloat(jsonData.corrente)*220)].join(";")+"\n";	
+							var head = [data_hoje,hora_hoje, jsonData.corrente,parseFloat(jsonData.corrente).toFixed(2)*220].join(";")+"\n";	
 			
 							try{
 								fs.appendFile('/home/pi/NODEARDUINO_SERVER/'+lugar+'.csv', head, function (err) {});   	
