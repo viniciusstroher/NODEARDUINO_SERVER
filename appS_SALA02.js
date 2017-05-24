@@ -8,7 +8,7 @@ var hora_hoje = '';
 var net = require('net');
 var fs  = require('fs');
 
-var contagem_csv = 5*60000;
+var contagem_csv = 60000;
 var contagem_csv_contando = false;
 
 function startServer(){

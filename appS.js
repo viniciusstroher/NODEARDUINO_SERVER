@@ -40,7 +40,7 @@ var dataObj = new Date();
 data_hoje = (dataObj.getMonth()+1)+"/"+dataObj.getDate();
 hora_hoje = dataObj.getHours()+":"+dataObj.getMinutes();
 
-var contagem_csv = 5*60000;
+var contagem_csv = 30000;
 var contagem_csv_contando = false;
 
 
