@@ -381,7 +381,8 @@ app.get('/contagem_csv', function(req, res) {
 
 app.get('/pir_mode', function(req, res) {
 	try{
-		pir_mode = req.query.valor;
+		
+		pir_mode = (req.query.valor == 'true');
 		res.send({retorno: 'valor alterado '+pir_mode+' @ '+req.query.valor+'.'});
 	}catch(ex){
 		 res.send({retorno: 'valor nao alterado.'});
