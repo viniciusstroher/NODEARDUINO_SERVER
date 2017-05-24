@@ -311,7 +311,7 @@ app.get('/status', function(req, res) {
 
 app.get('/ldr1', function(req, res) {
 	try{
-		ldr1Corte = req.query.valor;
+		ldr1Corte = parseInt(req.query.valor);
 		res.send({retorno: 'valor alterado '+ldr1Corte+' @ '+req.query.valor+'.'});
 	}catch(ex){
 		 res.send({retorno: 'valor nao alterado.'});
@@ -320,7 +320,7 @@ app.get('/ldr1', function(req, res) {
 
 app.get('/ldr2', function(req, res) {
 	try{
-		ldt2Corte = req.query.valor;
+		ldt2Corte = parseInt(req.query.valor);
 		res.send({retorno: 'valor alterado '+ldt2Corte+' @ '+req.query.valor+'.'});
 	}catch(ex){
 		 res.send({retorno: 'valor nao alterado.'});
@@ -329,7 +329,7 @@ app.get('/ldr2', function(req, res) {
 
 app.get('/ms', function(req, res) {
 	try{
-		ms = req.query.valor;
+		ms = parseInt(req.query.valor);
 		res.send({retorno: 'valor alterado '+ms+' @ '+req.query.valor+'.'});
 	}catch(ex){
 		 res.send({retorno: 'valor nao alterado.'});
@@ -338,7 +338,7 @@ app.get('/ms', function(req, res) {
 
 app.get('/amostras', function(req, res) {
 	try{
-		amostras = req.query.valor;
+		amostras = parseInt(req.query.valor);
 		res.send({retorno: 'valor alterado '+amostras+' @ '+req.query.valor+'.'});
 	}catch(ex){
 		 res.send({retorno: 'valor nao alterado.'});
@@ -366,6 +366,7 @@ app.get('/ldr2_fator', function(req, res) {
 app.get('/contagem_csv', function(req, res) {
 	try{
 		contagem_csv = parseInt(req.query.valor);
+		console.log(contagem_csv);
 		res.send({retorno: 'valor alterado '+contagem_csv+' @ '+req.query.valor+'.'});
 	}catch(ex){
 		 res.send({retorno: 'valor nao alterado.'});
