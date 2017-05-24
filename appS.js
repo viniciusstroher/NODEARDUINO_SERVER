@@ -72,58 +72,50 @@ function startServer(){
 			if(ligaArCondicionado){
 				ligaArCondicionado = false;
 				socket.write('liga_ar_condicionado');
-				//console.log('liga_luz');
-				//process.exit();
+			
 			}
 
 			if(ligarProjetor){
 				ligarProjetor = false;
 				socket.write('liga_projetor');
-				//console.log('liga_luz');
-				//process.exit();
+			
 			}
 
 
 			if(ligaLuz){
 				ligaLuz = false;
 				socket.write('abre_rele_luz1');
-				//console.log('liga_luz');
-				//process.exit();
+	
 			}
 
 			if(desligaLuz){
 				desligaLuz = false;
 				socket.write('fecha_rele_luz1');
-				//console.log('desliga_luz');
-				//process.exit();
+		
 			}
 
 			if(ligaLuz2){
 				ligaLuz2 = false;
 				socket.write('abre_rele_luz2');
-				//console.log('liga_luz');
-				//process.exit();
+	
 			}
 
 			if(desligaLuz2){
 				desligaLuz2 = false;
 				socket.write('fecha_rele_luz2');
-				//console.log('desliga_luz');
-				//process.exit();
+
 			}
 
 			if(ligaLuz3){
 				ligaLuz3 = false;
 				socket.write('abre_rele_luz3');
-				//console.log('liga_luz');
-				//process.exit();
+
 			}
 
 			if(desligaLuz3){
 				desligaLuz3 = false;
 				socket.write('fecha_rele_luz3');
-				//console.log('desliga_luz');
-				//process.exit();
+
 			}
 			
 			socket.on('data', function (data) {
