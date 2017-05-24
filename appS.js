@@ -43,6 +43,9 @@ hora_hoje = dataObj.getHours()+":"+dataObj.getMinutes();
 var contagem_csv = 30000;
 var contagem_csv_contando = false;
 
+var pir_mode = false;
+var pir_mode_processando = false;
+var pir_re_armar = 60000;
 
 function startServer(){
 	try{
@@ -140,7 +143,7 @@ function startServer(){
 					pir_2 = jsonData.movimentacao2;
 
 					//REGRA SHUTDOWN
-					if(!processando_pir){
+					if(!processando_pir && !pir_mode){
 						processando_pir = true;
 						
 						setTimeout(function(){
@@ -171,6 +174,14 @@ function startServer(){
 							
 						},ms);
 						
+					}else{
+						if(!pir_mode_processando){
+							pir_mode_processando = true;
+							setTimeout(function(){
+								pir_mode_processando = false;
+								pir_mode = false;
+							},pir_re_armar);
+						}
 					}
 					//regra shutdown
 
@@ -367,6 +378,27 @@ app.get('/contagem_csv', function(req, res) {
 		 res.send({retorno: 'valor nao alterado.'});
 	}
 });
+
+app.get('/pir_mode', function(req, res) {
+	try{
+		pir_mode = req.query.valor;
+		res.send({retorno: 'valor alterado '+pir_mode+' @ '+req.query.valor+'.'});
+	}catch(ex){
+		 res.send({retorno: 'valor nao alterado.'});
+	}
+});
+
+app.get('/pir_re_armar', function(req, res) {
+	try{
+		pir_re_armar = parseInt(req.query.valor);
+		res.send({retorno: 'valor alterado '+pir_re_armar+' @ '+req.query.valor+'.'});
+	}catch(ex){
+		 res.send({retorno: 'valor nao alterado.'});
+	}
+});
+
+
+
 
 
 
