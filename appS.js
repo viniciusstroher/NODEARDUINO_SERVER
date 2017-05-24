@@ -157,14 +157,12 @@ function startServer(){
 									console.log("###### regraShutdown",regraShutdown,'Luminosidade',jsonData.luminosidade +">"+ldr1Corte,'Luminosidade2',jsonData.luminosidade2+">"+ldt2Corte);
 								}
 							}else{
-								if(parseInt(jsonData.luminosidade) > parseInt(ldr1Corte) &&  parseInt(jsonData.luminosidade2) > parseInt(ldt2Corte)){
+								if(parseFloat(jsonData.luminosidade) > parseFloat(ldr1Corte) &&  parseFloat(jsonData.luminosidade2) > parseFloat(ldt2Corte)){
 										regraShutdown = true;
 										console.log("###### regraShutdown",regraShutdown,'Luminosidade',jsonData.luminosidade +">"+ldr1Corte ,'Luminosidade2',jsonData.luminosidade2 +">"+ldt2Corte);
-								
 								}else{
 									upAll = true;
-									console.log("###### upAll",upAll,'Luminosidade',jsonData.luminosidade+">"+ldr1Corte,'Luminosidade2',jsonData.luminosidade2+">"+ldt2Corte);
-								
+									console.log("###### upAll",upAll,'Luminosidade',jsonData.luminosidade+">"+ldr1Corte,'Luminosidade2',jsonData.luminosidade2+">"+ldt2Corte);			
 								}
 								sem_presenca = 0;
 							}
@@ -201,17 +199,10 @@ function startServer(){
 					//console.log(ex);
 				}
 
-				var log = '[Log - '+new Date().toISOString()+'] \n : '+data.toString('utf8')+"\r\n";
-			    
+				
 			    try{
-					fs.appendFile('log_arduino.txt', log, function (err) {
-					  if (err) {
-					    // append failed
-					  } else {
-					    // done
-					  }
-					});
-			    	
+			    	var log = '[Log - '+new Date().toISOString()+'] \n : '+data.toString('utf8')+"\r\n";
+					fs.appendFile('log_arduino.txt', log, function (err) {});
 				}catch(ex){
 					
 				}

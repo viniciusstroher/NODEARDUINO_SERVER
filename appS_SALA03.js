@@ -54,8 +54,6 @@ function startServer(){
 					//console.log(ex);
 				}
 
-				var log = '[Log - '+new Date().toISOString()+'] \n : '+data.toString('utf8')+"\r\n";
-
 			});
 
 			socket.on('error', function (data) {
