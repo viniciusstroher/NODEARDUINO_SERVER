@@ -164,6 +164,7 @@ function startServer(){
 								processando_pir = false;
 							}catch(ex){
 								console.log('try pir on err:',ex);
+								processando_pir = false;
 							}
 						},ms);
 						
