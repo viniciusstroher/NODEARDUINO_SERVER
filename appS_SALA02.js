@@ -8,7 +8,8 @@ var hora_hoje = '';
 var net = require('net');
 var fs  = require('fs');
 
-
+var contagem_csv = 5*60000;
+var contagem_csv_contando = false;
 
 function startServer(){
 	try{
@@ -26,39 +27,39 @@ function startServer(){
 					var jsonDataAux = JSON.parse(data.toString());
 					jsonData = jsonDataAux;
 					jsonData.corrente = Math.round(jsonData.corrente);
-					var dataObj = new Date();
-					data_hoje = (dataObj.getMonth()+1)+"/"+dataObj.getDate();
-					hora_hoje = dataObj.getHours()+":"+dataObj.getMinutes();
+					
 
 					
-					var head = [data_hoje,hora_hoje, jsonData.corrente,Math.round(parseFloat(jsonData.corrente)*220)].join(";")+"\n";	
+					if(!contagem_csv_contando){
+						var contagem_csv_contando = true;
+						
+						var dataObj = new Date();
+						data_hoje = (dataObj.getMonth()+1)+"/"+dataObj.getDate();
+						hora_hoje = dataObj.getHours()+":"+dataObj.getMinutes();
+
+						setTimeout(function(){
+							var contagem_csv_contando = false;
+							var head = [data_hoje,hora_hoje, jsonData.corrente,Math.round(parseFloat(jsonData.corrente)*220)].join(";")+"\n";	
 			
-					try{
-						fs.appendFile('/home/pi/NODEARDUINO_SERVER/'+lugar+'.csv', head, function (err) {
-							if (err) {
-									// append failed
-							} else {
-									// done
+							try{
+								fs.appendFile('/home/pi/NODEARDUINO_SERVER/'+lugar+'.csv', head, function (err) {});   	
+							}catch(ex){
+								console.log(ex);		
 							}
-						});
-						    	
-					}catch(ex){
-						console.log(ex);		
+						},contagem_csv);
 					}
 				}catch(ex){
 					//console.log(ex);
 				}
 
 				var log = '[Log - '+new Date().toISOString()+'] \n : '+data.toString('utf8')+"\r\n";
-			    //console.log(log);
-
 
 			});
 
 			socket.on('error', function (data) {
 				console.log('error socket',data);
 			});
-			//socket.pipe(socket);
+			
 		});
 
 		server.listen(portaWS);

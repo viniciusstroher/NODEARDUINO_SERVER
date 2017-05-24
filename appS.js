@@ -31,8 +31,6 @@ var ldt2Corte = 600;
 var ms = 6000;
 var amostras = 6;
 
-//var head = ['dia','hora', 'luminosidade 1', 'luminosidade 2', 'pir 1' , 'pir 2','temperatura 1', 'temperatura 2'].join(";")+"\n";	
-
 var ldr1_fator = 0.6875;
 var ldr2_fator = 0.1930;
 
@@ -45,19 +43,6 @@ hora_hoje = dataObj.getHours()+":"+dataObj.getMinutes();
 var contagem_csv = 5*60000;
 var contagem_csv_contando = false;
 
-/*try{
-	fs.appendFile('mestre.csv', head, function (err) {
-		if (err) {
-				// append failed
-		} else {
-				// done
-		}
-	});
-	    	
-}catch(ex){
-			
-}
-*/
 
 function startServer(){
 	try{
@@ -206,14 +191,7 @@ function startServer(){
 							var row = [data_hoje,hora_hoje, jsonData.luminosidade, jsonData.luminosidade2, jsonData.movimentacao, jsonData.movimentacao2,jsonData.temperatura, jsonData.temperatura2].join(";")+"\n"; 	
 
 							try{
-								fs.appendFile('/home/pi/NODEARDUINO_SERVER/mestre.csv', row, function (err) {
-									if (err) {
-											// append failed
-									} else {
-											// done
-									}
-								});
-								    	
+								fs.appendFile('/home/pi/NODEARDUINO_SERVER/mestre.csv', row, function (err) {});    	
 							}catch(ex){
 										
 							}
@@ -224,8 +202,7 @@ function startServer(){
 				}
 
 				var log = '[Log - '+new Date().toISOString()+'] \n : '+data.toString('utf8')+"\r\n";
-			    //console.log(log);
-
+			    
 			    try{
 					fs.appendFile('log_arduino.txt', log, function (err) {
 					  if (err) {
@@ -243,7 +220,7 @@ function startServer(){
 			socket.on('error', function (data) {
 				console.log('error socket',data);
 			});
-			//socket.pipe(socket);
+			
 		});
 
 		server.listen(8090);
