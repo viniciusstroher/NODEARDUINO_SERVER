@@ -1,3 +1,7 @@
+var net = require('net');
+var fs  = require('fs');
+var os  = require('os');
+
 var ligaLuz    = false;
 var desligaLuz = false;
 
@@ -11,9 +15,6 @@ var ligaArCondicionado = false;
 var ligarProjetor 	   = false;
 
 var jsonData = null;
-
-var net = require('net');
-var fs  = require('fs');
 
 var data_hoje = '';
 var hora_hoje = '';
@@ -133,11 +134,8 @@ function startServer(){
 
 					jsonData = jsonDataAux;
 					//FATOR DE CORRECAO
-					//console.log(jsonData.luminosidade,'@',ldr1_fator,'@',jsonData.luminosidade*ldr1_fator);
-					//console.log(jsonData.luminosidade2,'@',ldr2_fator,'@',jsonData.luminosidade2*ldr2_fator);
-
-					jsonData.luminosidade  = Math.round(parseFloat(jsonData.luminosidade)  * ldr1_fator); 
-					jsonData.luminosidade2 = Math.round(parseFloat(jsonData.luminosidade2) * ldr2_fator); 
+					jsonData.luminosidade  = (parseFloat(jsonData.luminosidade).toFixed(2)  * ldr1_fator); 
+					jsonData.luminosidade2 = (parseFloat(jsonData.luminosidade2).toFixed(2) * ldr2_fator); 
 					
 					pir_1 = jsonData.movimentacao;
 					pir_2 = jsonData.movimentacao2;
@@ -185,7 +183,6 @@ function startServer(){
 					}
 					//regra shutdown
 
-
 					if(!contagem_csv_contando){
 						var contagem_csv_contando = true;
 						
@@ -200,7 +197,11 @@ function startServer(){
 							var row = [data_hoje,hora_hoje, jsonData.luminosidade, jsonData.luminosidade2, jsonData.movimentacao, jsonData.movimentacao2,jsonData.temperatura, jsonData.temperatura2].join(";")+"\n"; 	
 
 							try{
-								fs.appendFile('/home/pi/NODEARDUINO_SERVER/mestre.csv', row, function (err) {});    	
+								if(os.platform() != "win32"){
+									fs.appendFile('/home/pi/NODEARDUINO_SERVER/mestre.csv', row, function (err) {});    	
+								}else{
+									fs.appendFile('mestre.csv', row, function (err) {});    	
+								}
 							}catch(ex){
 										
 							}

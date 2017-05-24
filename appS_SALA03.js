@@ -1,3 +1,7 @@
+var net = require('net');
+var fs  = require('fs');
+var os  = require('os');
+
 var jsonData = null;
 var portaWS = 8091;
 var portaAPI = 81;
@@ -6,9 +10,6 @@ var lugar = "Sala 03";
 
 var data_hoje = '';
 var hora_hoje = '';
-
-var net = require('net');
-var fs  = require('fs');
 
 var contagem_csv = 60000;
 var contagem_csv_contando = false;
@@ -42,8 +43,11 @@ function startServer(){
 
 							var head = [data_hoje,hora_hoje, jsonData.corrente,parseFloat(jsonData.corrente).toFixed(2)*220].join(";")+"\n";	
 							try{
-								fs.appendFile('/home/pi/NODEARDUINO_SERVER/'+lugar+'.csv', head, function (err) {});
-								    	
+								if(os.platform() != "win32"){
+									fs.appendFile('/home/pi/NODEARDUINO_SERVER/'+lugar+'.csv', head, function (err) {});
+								}else{
+									fs.appendFile(lugar+'.csv', head, function (err) {});
+								}  	
 							}catch(ex){
 										
 							}
