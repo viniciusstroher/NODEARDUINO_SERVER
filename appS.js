@@ -189,7 +189,7 @@ function startServer(){
 					if(!contagem_csv_contando){
 						var contagem_csv_contando = true;
 						
-						setTimeout(function(){;
+						setTimeout(function(){
 							var contagem_csv_contando = false;
 
 							var dataObj = new Date();
