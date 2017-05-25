@@ -133,43 +133,7 @@ function startServer(){
 					pir_2 = jsonData.movimentacao2;
 
 					//REGRA SHUTDOWN
-					if(!processando_pir && !pir_mode){
-						processando_pir = true;
-						
-						setTimeout(function(){
-							try{
-								console.log('Fator',ldr1_fator,ldr2_fator);
-								console.log('PIRS',pir_1,pir_2);
-
-								if(pir_1 == 0 && pir_2 == 0){
-									sem_presenca +=1;
-									console.log('sem_presenca:',sem_presenca+' de '+amostras);
-							
-									if(sem_presenca > amostras){
-										sem_presenca = 0;
-										regraShutdown = true;
-										console.log("###### regraShutdown",regraShutdown,'Luminosidade',jsonData.luminosidade +">"+ldr1Corte,'Luminosidade2',jsonData.luminosidade2+">"+ldt2Corte);
-									}
-								}else{
-									if(parseFloat(jsonData.luminosidade) > parseFloat(ldr1Corte) &&  parseFloat(jsonData.luminosidade2) > parseFloat(ldt2Corte)){
-											regraShutdown = true;
-											console.log("###### regraShutdown",regraShutdown,'Luminosidade',jsonData.luminosidade +">"+ldr1Corte ,'Luminosidade2',jsonData.luminosidade2 +">"+ldt2Corte);
-									}else{
-										upAll = true;
-										console.log("###### upAll",upAll,'Luminosidade',jsonData.luminosidade+">"+ldr1Corte,'Luminosidade2',jsonData.luminosidade2+">"+ldt2Corte);			
-									}
-									sem_presenca = 0;
-								}
-								
-								processando_pir = false;
-							}catch(ex){
-								console.log('try pir on err:',ex);
-								processando_pir = false;
-								
-							}
-						},ms);
-						
-					}else{
+					if(pir_mode){
 						if(!pir_mode_processando){
 							pir_mode_processando = true;
 							setTimeout(function(){
@@ -177,7 +141,46 @@ function startServer(){
 								pir_mode = false;
 							},pir_re_armar);
 						}
+					}else{
+						if(!processando_pir){
+							processando_pir = true;
+							
+							setTimeout(function(){
+								try{
+									console.log('Fator',ldr1_fator,ldr2_fator);
+									console.log('PIRS',pir_1,pir_2);
+
+									if(pir_1 == 0 && pir_2 == 0){
+										sem_presenca +=1;
+										console.log('sem_presenca:',sem_presenca+' de '+amostras);
+								
+										if(sem_presenca > amostras){
+											sem_presenca = 0;
+											regraShutdown = true;
+											console.log("###### regraShutdown",regraShutdown,'Luminosidade',jsonData.luminosidade +">"+ldr1Corte,'Luminosidade2',jsonData.luminosidade2+">"+ldt2Corte);
+										}
+									}else{
+										if(parseFloat(jsonData.luminosidade) > parseFloat(ldr1Corte) &&  parseFloat(jsonData.luminosidade2) > parseFloat(ldt2Corte)){
+												regraShutdown = true;
+												console.log("###### regraShutdown",regraShutdown,'Luminosidade',jsonData.luminosidade +">"+ldr1Corte ,'Luminosidade2',jsonData.luminosidade2 +">"+ldt2Corte);
+										}else{
+											upAll = true;
+											console.log("###### upAll",upAll,'Luminosidade',jsonData.luminosidade+">"+ldr1Corte,'Luminosidade2',jsonData.luminosidade2+">"+ldt2Corte);			
+										}
+										sem_presenca = 0;
+									}
+									
+									processando_pir = false;
+								}catch(ex){
+									console.log('try pir on err:',ex);
+									processando_pir = false;
+									
+								}
+							},ms);
+							
+						}
 					}
+
 					//regra shutdown
 
 					if(!contagem_csv_contando){
