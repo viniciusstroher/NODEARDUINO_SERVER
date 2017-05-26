@@ -133,10 +133,12 @@ function startServer(){
 					pir_2 = jsonData.movimentacao2;
 
 					//REGRA SHUTDOWN
+					console.log('pir_mode',pir_mode);
 					if(pir_mode){
 						if(!pir_mode_processando){
 							pir_mode_processando = true;
 							setTimeout(function(){
+								console.log('pir_mode desligado');
 								pir_mode_processando = false;
 								pir_mode = false;
 							},pir_re_armar);
