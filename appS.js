@@ -216,7 +216,7 @@ function startServer(){
 						},contagem_csv);
 					}
 				}catch(ex){
-					//console.log(ex);
+					console.log(ex);
 				}
 
 			});
